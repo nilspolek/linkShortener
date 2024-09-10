@@ -4,6 +4,7 @@ import (
 	"crypto/rand"
 	"database/sql"
 	"encoding/hex"
+
 	_ "github.com/mattn/go-sqlite3"
 	"github.com/nilspolek/goLog"
 )
@@ -26,9 +27,30 @@ func NewLinkStore(dbFile string) *LinkStore {
 	}
 }
 
-func (store *LinkStore) AddLink(dest string) {
-	rows := goLog.LogOnError(store.db.Query("SELECT sLink FROM links"))
-	goLog.Debug("%v", rows)
+func (store *LinkStore) AddLink(dest string) string {
+	slink := NewLink(6)
+	insertLink := `
+	INSERT INTO links (sLink, dLink) VALUES (?, ?);
+	`
+	goLog.LogOnError(store.db.Exec(insertLink, slink, dest))
+	return slink
+}
+
+func (store *LinkStore) GetLink(dlink string) string {
+	var slink string
+	getLink := `
+	SELECT sLink FROM links WHERE dLink = ?;
+	`
+	store.db.QueryRow(getLink, dlink).Scan(&slink)
+	return slink
+}
+func (store *LinkStore) GetDest(slink string) string {
+	var dlink string
+	getLink := `
+	SELECT dLink FROM links WHERE sLink = ?;
+	`
+	store.db.QueryRow(getLink, slink).Scan(&dlink)
+	return dlink
 }
 
 func (store *LinkStore) Close() {

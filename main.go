@@ -1,8 +1,22 @@
 package main
 
-import "linkShortener/db"
+import (
+	"linkShortener/db"
+	"net/http"
+)
+
+const (
+	defaultAddr = ":8080"
+	defaultDest = "httpa://google.com/"
+)
 
 func main() {
 	store := db.NewLinkStore("link.db")
-	store.AddLink("HalloWelt")
+	defer store.Close()
+	setupHandlers()
+	http.ListenAndServe(defaultAddr, nil)
+}
+
+func setupHandlers() {
+	http.HandleFunc("/", mainHandler)
 }
