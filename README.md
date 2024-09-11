@@ -42,7 +42,8 @@ returns
 ### Delete a shortened URL (DELETE request):
 ```json
 {
-  "short": "shortened"
+  "destination": "https://example.com"
+  "short": ["<shortlink1>, <shortlink2>, ..."]
 }
 ```
 ## Testing
