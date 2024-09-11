@@ -13,5 +13,5 @@ steps:
       api_key:
         from_secret: gh-API-key
       files: bin/*
-      when:
-        event: tag
+    when:
+      event: tag
