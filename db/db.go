@@ -4,6 +4,7 @@ import (
 	"crypto/rand"
 	"database/sql"
 	"encoding/hex"
+	"errors"
 
 	_ "github.com/mattn/go-sqlite3"
 	"github.com/nilspolek/goLog"
@@ -61,6 +62,32 @@ func (store *LinkStore) Close() {
 	if err != nil {
 		goLog.Error(err.Error())
 	}
+}
+
+func (store *LinkStore) DeleteLink(slink string) error {
+	// Delete a link from the database
+	if store.GetDest(slink) == "" {
+		return errors.New("Short link does not exist")
+	}
+	deleteLink := `
+	DELETE FROM links WHERE sLink = ?;
+	`
+	goLog.LogOnError(store.db.Exec(deleteLink, slink))
+	return nil
+}
+
+func (store *LinkStore) DeleteDest(dlink string) error {
+	// Delete a link from the database
+	//
+	// Check if the destination link exists in the database
+	if store.GetLink(dlink) == "" {
+		return errors.New("Destination link does not exist")
+	}
+	deleteLink := `
+	DELETE FROM links WHERE dLink = ?;
+	`
+	goLog.LogOnError(store.db.Exec(deleteLink, dlink))
+	return nil
 }
 
 func NewLink(length int) string {

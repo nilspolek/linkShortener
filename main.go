@@ -12,7 +12,8 @@ const (
 
 func main() {
 	li := &LinkHandler{
-		ls: *db.NewLinkStore("link.db"),
+		ls:          *db.NewLinkStore("link.db"),
+		defaultDest: defaultDest,
 	}
 	defer li.ls.Close()
 	setupHandlers(li)
