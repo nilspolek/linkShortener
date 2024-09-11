@@ -28,6 +28,7 @@ func NewLinkStore(dbFile string) *LinkStore {
 }
 
 func (store *LinkStore) AddLink(dest string) string {
+	// Add a new link to the database and return the short link
 	slink := NewLink(6)
 	insertLink := `
 	INSERT INTO links (sLink, dLink) VALUES (?, ?);
@@ -37,6 +38,7 @@ func (store *LinkStore) AddLink(dest string) string {
 }
 
 func (store *LinkStore) GetLink(dlink string) string {
+	// Return the short link for a given destination link
 	var slink string
 	getLink := `
 	SELECT sLink FROM links WHERE dLink = ?;
@@ -45,6 +47,7 @@ func (store *LinkStore) GetLink(dlink string) string {
 	return slink
 }
 func (store *LinkStore) GetDest(slink string) string {
+	// Return the destination link for a given short link
 	var dlink string
 	getLink := `
 	SELECT dLink FROM links WHERE sLink = ?;
@@ -61,6 +64,7 @@ func (store *LinkStore) Close() {
 }
 
 func NewLink(length int) string {
+	// Generate a random string of length length
 	bytes := make([]byte, length)
 	goLog.LogOnError(rand.Read(bytes))
 	return hex.EncodeToString(bytes)[:length]

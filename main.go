@@ -7,16 +7,18 @@ import (
 
 const (
 	defaultAddr = ":8080"
-	defaultDest = "httpa://google.com/"
+	defaultDest = "https://google.com/"
 )
 
 func main() {
-	store := db.NewLinkStore("link.db")
-	defer store.Close()
-	setupHandlers()
+	li := &LinkHandler{
+		ls: *db.NewLinkStore("link.db"),
+	}
+	defer li.ls.Close()
+	setupHandlers(li)
 	http.ListenAndServe(defaultAddr, nil)
 }
 
-func setupHandlers() {
-	http.HandleFunc("/", mainHandler)
+func setupHandlers(li *LinkHandler) {
+	http.Handle("/", li)
 }

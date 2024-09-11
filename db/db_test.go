@@ -1,6 +1,7 @@
 package db
 
 import (
+	"os"
 	"testing"
 )
 
@@ -18,4 +19,16 @@ func TestNewLinkStore(t *testing.T) {
 	if got != "Hallo Welt" {
 		t.Fatalf("Error wrong destination:\t%s", got)
 	}
+	os.Remove("link.db")
+}
+
+func TestEmptyLink(t *testing.T) {
+	store := NewLinkStore("link.db")
+	defer store.Close()
+	sLink := store.AddLink("")
+	got := store.GetDest(sLink)
+	if got != "" {
+		t.Fatalf("Error wrong destination:\t%s", got)
+	}
+	os.Remove("link.db")
 }

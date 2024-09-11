@@ -5,10 +5,13 @@ build:
 	$(GO_CMD) build -o ./$(BINARY_NAME)
 
 test:
-	@$(GO_CMD) test ./*/ -count=1
+	$(GO_CMD) test ./db/ . -count=1
 
 clean:
 	rm -f $(BINARY_NAME)
+
+rmdb:
+	rm -f ./link.db
 
 run: build
 	./$(BINARY_NAME)
