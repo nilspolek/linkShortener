@@ -24,8 +24,13 @@ jobs:
       run: make build
     - name: Test
       run: make test
-    - name: Download a Build Artifact
-      uses: actions/download-artifact@v4.1.8
+    - name: Create Release
+      uses: actions/create-release@v1
+      env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
-        path: './bin/'
+        tag_name: ${{ github.ref }}
+        release_name: Release ${{ github.ref }}
+        draft: false
+        prerelease: false
           
