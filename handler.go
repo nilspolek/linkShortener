@@ -39,6 +39,11 @@ func (h *LinkHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 			http.Error(w, "Invalid request", http.StatusBadRequest)
 		}
 		encoder := json.NewEncoder(w)
+		if reqestData.Destination == "" {
+			http.Error(w, "Invalid request", http.StatusBadRequest)
+			goLog.Error("Invalid request destination is empty")
+			return
+		}
 		sLink := h.ls.AddLink(reqestData.Destination)
 		if err := encoder.Encode(ShortLink{Short: sLink}); err != nil {
 			goLog.Error(err.Error())
@@ -86,7 +91,6 @@ func (h *LinkHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 			}
 		}
 		fmt.Fprintf(w, "Deleted Link/s %s from Database", reqestData)
-		w.WriteHeader(http.StatusOK)
 		break
 	}
 }

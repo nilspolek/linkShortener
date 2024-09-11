@@ -7,12 +7,13 @@ import (
 
 const (
 	defaultAddr = ":8080"
-	defaultDest = "https://google.com/"
+	defaultDest = "https://www.google.com/"
+	defaultDB   = "link.db"
 )
 
 func main() {
 	li := &LinkHandler{
-		ls:          *db.NewLinkStore("link.db"),
+		ls:          *db.NewLinkStore(defaultDB),
 		defaultDest: defaultDest,
 	}
 	defer li.ls.Close()
