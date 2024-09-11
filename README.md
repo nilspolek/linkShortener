@@ -1,4 +1,5 @@
 # Link Shortener
+[![Build Status](https://music.webnils.de/api/badges/nilspolek/linkShortener/status.svg)](https://music.webnils.de/nilspolek/linkShortener)
 
 Link Shortener is a simple service that uses SQLite for storing and managing shortened URLs. This Go-based application provides endpoints to shorten URLs and resolve them back to their original destination.
 
