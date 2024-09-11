@@ -5,4 +5,13 @@ steps:
   - name: test
     image: golang:1.23.1
     commands:
+      - make build
       - make test
+  - name: publish
+    image: plugins/github-release
+    settings:
+      api_key:
+        from_secret: gh-API-key
+      files: bin/*
+      when:
+        event: tag
